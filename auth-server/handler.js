@@ -15,6 +15,7 @@ const credentials = {
   redirect_uris: ["https://slap-br.github.io/Meet/"],
   javascript_origins: ["https://slap-br.github.io", "http://localhost:3000"],
 };
+
 const { client_secret, client_id, redirect_uris, calendar_id } = credentials;
 const oAuth2Client = new google.auth.OAuth2(
   client_id,
@@ -22,20 +23,54 @@ const oAuth2Client = new google.auth.OAuth2(
   redirect_uris[0]
 );
 
-module.exports.getAuthURL = async () => {
+module.exports.getAuthURL = async (event) => {
 
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: "offline",
     scope: SCOPES,
   });
 
-  return {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-    },
-    body: JSON.stringify({
-      authUrl: authUrl,
-    }),
-  };
+  // const oAuth2Client = new google.auth.OAuth2 (
+  //   client_id,
+  //   client_secret,
+  //   redirect_uris[0]
+  // );
+
+  const code =decodeURIComponent(`${event.pathParameters.code}`)
+    return new Promise((resolve, reject) => {
+      
+      oAuth2Client.getToken(code, (err, token) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(token);
+      });
+    })
+
+    .then((token) =>{ 
+      return {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+        statusCode: 200,
+        body: JSON.stringify(token),
+      };
+    })
+    .catch((err) => {
+      console.error(err);
+      return{
+        statusCode: 500,
+        body: JSON.stringify(err),
+      };
+    });
 };
+
+//   return {
+//     statusCode: 200,
+//     headers: {
+//       "Access-Control-Allow-Origin": "*",
+//     },
+//     body: JSON.stringify({
+//       authUrl: authUrl,
+//     }),
+//   };
