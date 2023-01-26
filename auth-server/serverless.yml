@@ -10,8 +10,9 @@
 #    docs.serverless.com
 #
 # Happy Coding!
-
 service: auth-server
+
+frameworkVersion: "3"
 
 provider:
   name: aws
