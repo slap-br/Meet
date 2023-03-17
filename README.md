@@ -8,6 +8,8 @@ User can show/hide event details, specify number of events to view, use it offli
 
 REACT, TDD Technique, GOOGLE Calendar API, Oauth2 flow, AWS Lambda.
 
+## Serverless Function applied to the App
+The Meet app is an example of how serverless functions can be used to build scalable, efficient, and cost-effective web applications. By leveraging the power of AWS Lambda, API Gateway, Cognito, SNS, and SQS, the app is able to provide a high-quality video conferencing experience for users while minimizing infrastructure costs and complexity.
 
 
 # User Stories
